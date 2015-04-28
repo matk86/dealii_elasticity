@@ -1,0 +1,8 @@
+Debug
+build
+old
+test
+.cproject
+.project
+*~
+*.bak
