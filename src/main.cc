@@ -8,7 +8,7 @@ int main (int argc, char* argv[])
       dealii::deallog.depth_console (0);
       
       std::string fname;
-      double fmag, line_tol, lambda_val, mu_val;
+      double fmag, forceratio,line_tol, lambda_val, mu_val;
       dealii::Point<3> p1, p2, p3;
       std::vector<double> hkl(3);
       std::vector<int> mesh_refine, refine_surf;
@@ -30,11 +30,12 @@ int main (int argc, char* argv[])
 	ALE Parameters
 	-----------------------------------------------------------------*/
       // elastic constant: lame parameters
-      lambda_val = 420.0;
-      mu_val = 290.0;
+      lambda_val = 30.0;//in GPa
+      mu_val = 48.5; //in GPa
       
       // body force magnitude
-      fmag = 100.0;
+      fmag = 10.0;
+      forceratio = 10.0; // F_111/F_100
       
       //width of line along which the body force will be applied
       line_tol = 0.01;
@@ -60,17 +61,28 @@ int main (int argc, char* argv[])
       //boundary indicators of surfaces where dirichlet bc 
       //will be applied
       //note: zero displacement
-      // bottom surface x, y and z displacement  = 0
       dir_bc.clear();
       which_comp.clear();
+      // xy plane, z displacement set to 0
       dir_bc.push_back(2);
-      which_comp.push_back(which_comp1);
-      // side surfaces, only x and y displacement = 0
-      which_comp1.pop_back();
+      which_comp1.clear();
       which_comp1.push_back(false);
-      dir_bc.push_back(7);
+      which_comp1.push_back(false);
+      which_comp1.push_back(true);
       which_comp.push_back(which_comp1);
+      // yz plane, x displacement set to 0
+      dir_bc.push_back(7);
+      which_comp1.clear();
+      which_comp1.push_back(true);
+      which_comp1.push_back(false);
+      which_comp1.push_back(false);
+      which_comp.push_back(which_comp1);
+      // xz plane, y displacement set to 0
       dir_bc.push_back(3);
+      which_comp1.clear();
+      which_comp1.push_back(false);
+      which_comp1.push_back(true);
+      which_comp1.push_back(false);
       which_comp.push_back(which_comp1);
 
       // solver settings
@@ -84,7 +96,7 @@ int main (int argc, char* argv[])
       ale::ElasticProblem<3> cuboct( argv[1],
 				     lambda_val, mu_val,
 				     p1, p2, p3,
-				     hkl, line_tol, fmag,
+				     hkl, line_tol, fmag, forceratio,
 				     mesh_refine, refine_surf,
 				     max_iter, conv_tol, precond_param,
 				     dir_bc, which_comp);

@@ -14,32 +14,32 @@ ElasticProblem<dim>::ElasticProblem (std::string fname,
 				     double lambda_val, double mu_val,
 				     Point<dim> p1, Point<dim> p2, Point<dim> p3,
 				     std::vector<double> hkl,
-				     double line_tol, double fmag,
+				     double line_tol, double fmag, double forceratio,
 				     std::vector<int> mesh_set, 
 				     std::vector<int> refine_surf,
 				     unsigned int max_iter, double conv_tol, 
 				     double precond_param,
 				     std::vector<int> dir_bc, 
 				     std::vector<std::vector<bool> > dirbc_mask)
-		:
-		fe (FE_Q<dim>(1), dim),
-		dof_handler(triangulation),
-		mapping(3),
-		elastic_energy(0),
-		LLAMBDA(lambda_val),
-		LMU(mu_val),
-		LBDF(p1, p2, p3, hkl, line_tol, fmag)
-		{
-		  ALE_MESH = fname;
-		  ALE_GLOBAL_REFINE = mesh_set[0];
-		  ALE_LOCAL_REFINE = mesh_set[1];
-		  ALE_REFINE_SURFACES =  refine_surf;
-		  ALE_MAX_ITER = max_iter;
-		  ALE_CONV_TOL = conv_tol;
-		  ALE_PRECOND_PARAM = precond_param;
-		  ALE_DIR_BC =  dir_bc;
-		  ALE_DIRBC_MASK = dirbc_mask;
-		}
+  :
+  fe (FE_Q<dim>(1), dim),
+  dof_handler(triangulation),
+  mapping(3),
+  elastic_energy(0),
+  LLAMBDA(lambda_val),
+  LMU(mu_val),
+  LBDF(p1, p2, p3, hkl, line_tol, fmag, forceratio)
+{
+  ALE_MESH = fname;
+  ALE_GLOBAL_REFINE = mesh_set[0];
+  ALE_LOCAL_REFINE = mesh_set[1];
+  ALE_REFINE_SURFACES =  refine_surf;
+  ALE_MAX_ITER = max_iter;
+  ALE_CONV_TOL = conv_tol;
+  ALE_PRECOND_PARAM = precond_param;
+  ALE_DIR_BC =  dir_bc;
+  ALE_DIRBC_MASK = dirbc_mask;
+}
 
 // ElasticProblem::~ElasticProblem
 template <int dim>

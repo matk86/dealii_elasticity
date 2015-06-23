@@ -61,7 +61,8 @@ class BodyForce
 {
 public:
 	BodyForce(Point<dim> p1, Point<dim> p2, Point<dim> p3,
-			std::vector<double> hkl, double line_tol, double fmag);
+		  std::vector<double> hkl, double line_tol, 
+		  double fmag, double forceratio);
 	bool isonline(const Point<dim> & p, const Point<dim> & pbegin,
 			const Point<dim> & pend, double tol);
 	std::vector<double> get_force(const Point<dim> & p);
@@ -70,6 +71,7 @@ public:
 
 private:
 	double ALE_FORCE ;
+	double ALE_FORCE_RATIO ;
 	double ALE_TOL;
 	Point<dim> ALE_P1;
 	Point<dim> ALE_P2;
@@ -92,7 +94,7 @@ public:
 			double lambda_val, double mu_val, 
 			Point<dim> p1, Point<dim> p2, Point<dim> p3,
 			std::vector<double> hkl, 
-			double line_tol, double fmag,
+			double line_tol, double fmag, double forceratio,
 			std::vector<int> mesh_set, std::vector<int> refine_surf,
 			unsigned int max_iter, double conv_tol, double precond_param,
 			std::vector<int> dir_bc, std::vector<std::vector<bool> > dirbc_mask);
